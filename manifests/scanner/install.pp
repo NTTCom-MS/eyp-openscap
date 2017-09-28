@@ -18,9 +18,9 @@ class openscap::scanner::install inherits openscap::scanner {
 
   file { $openscap::scanner::basedir:
     ensure  => 'directory',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0700',
+    owner   => $openscap::scanner::basedir_owner,
+    group   => $openscap::scanner::basedir_group,
+    mode    => $openscap::scanner::basedir_mode,
     require => Exec["openscap scanner mkdir -p ${openscap::scanner::basedir}"],
   }
 
@@ -74,6 +74,19 @@ class openscap::scanner::install inherits openscap::scanner {
     group   => 'root',
     mode    => '0700',
     require => Exec["openscap scanner mkdir -p ${openscap::scanner::basedir}/reports"],
+  }
+
+  exec { "openscap scanner mkdir -p ${openscap::scanner::basedir}/remediation_scripts":
+    command => "mkdir -p ${openscap::scanner::basedir}/remediation_scripts",
+    creates => "${openscap::scanner::basedir}/remediation_scripts",
+  }
+
+  file { "${openscap::scanner::basedir}/remediation_scripts":
+    ensure  => 'directory',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0700',
+    require => Exec["openscap scanner mkdir -p ${openscap::scanner::basedir}/remediation_scripts"],
   }
 
 }
